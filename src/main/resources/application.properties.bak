@@ -1,0 +1,25 @@
+server.port=80
+debug=false
+#/ a, b, c三个项目 默认的/地址将产生冲突
+#一般情况下，小项目通常都是在Tomcat下部署多个webapp，通过上下文来区分；在集群或者
+#中大型项目中，通常我们使用一个Tomcat对应一个webapp，然后通过不同的端口来进行区分(8080,8081,8082)
+server.servlet.context-path=/myspringboot
+#UTF-8只包含了20000+个中文字符，对于生僻字显示不了
+spring.http.encoding.charset=UTF-8
+#开启thymeleaf缓存， Thymeleaf热部署
+#注意这里有大坑 除了设置false关闭缓存外
+#还要设置Intellij Setting -> Build, Execution, Deployment -> Compiler -> 勾选Build Project automatically
+spring.thymeleaf.cache=false
+#spring MVC中对输入参数的格式化
+spring.mvc.date-format=yyyy-MM-dd
+#设置JSON日期序列化输出格式，北京时间相对伦敦有8个小时时差所以使用GMT+8
+spring.jackson.time-zone=GMT+8
+spring.jackson.date-format=yyyy-MM-dd HH:mm:ss
+#日志输出的地址，springboot默认并没有进行文件输出，只在控制台进行打印
+#logging.file=D:/logs/msb.log
+#日志级别 debug -> info -> warning -> error
+#默认情况下springboot日志级别为info
+#如果设置了debug=true的时候，会自动降级到debug
+#root代表默认全局设置
+#logging.level.root=info
+

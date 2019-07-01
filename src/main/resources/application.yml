@@ -1,0 +1,19 @@
+debug: false
+
+#前缀相同的配置项，idea自动进行归纳
+server:
+  port: 80
+  servlet:
+    context-path: /
+spring:
+  http:
+    encoding:
+      charset: utf-8
+  thymeleaf:
+    cache: false
+  mvc:
+    date-format: yyyy-MM-dd
+
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
