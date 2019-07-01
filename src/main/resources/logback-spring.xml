@@ -4,7 +4,18 @@
 	<!--定义日志保存的路径-->
 	<property name="LOG_HOME" value="d:/logs" />
 
+    <!--
+        1.更改默认的logback.xml为logback-spring.xml SpringBoot当看到logback-spring.xml文件存在的时候，
+        才会启动日志的环境切换logback.xml文件没法做到；
+        2.在需要切换的环境上增加springProfile标签
+    -->
 
+	<springProfile name="dev">
+		<property name="LOG_NAME" value="d:/logs"/>
+	</springProfile>
+	<springProfile name="prd">
+		<property name="LOG_NAME" value="d:/logs"/>
+	</springProfile>
 
 	<!--定义一个控制台输出器，名为console-->
 	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
