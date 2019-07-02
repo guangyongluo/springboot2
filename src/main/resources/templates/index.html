@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<!-- 最重要的一部是引入thymeleaf命名空间 -->
+<html lang="zh-cn" xmlns="http://www.w3.org/1999/html" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--  -->
+    <title>[[#{app.report.name}]]</title>
+    <link href="css/bootstrap.css" type="text/css" rel="stylesheet"/>
+    <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
+    <style type="text/css">
+        .pagination {
+            margin: 0px
+        }
+
+        .pagination > li > a, .pagination >li > span {
+            margin: 0 5px;
+            border: 1px solid #dddddd;
+        }
+
+        .glyphicon {
+            margin-right: 3px;
+        }
+
+        .highlight{
+            background-color: lightgreen;
+        }
+    </style>
+</head>
+<body>
+<!-- 引用模板 模板引用表达式为 页面名::片段id -->
+<div th:insert="header_footer :: header">
+</div>
+    <div class="container">
+        <div class="row">
+            <div>
+                <ol class="breadcrumb" style="">
+                    <li><a th:href="#{app.website}">首页</a></li>
+                    <li class="active">实战案例</li>
+                    <li class="active">thymeleaf模板引擎实战</li>
+                </ol>
+            </div>
+            <!-- th:text代表将内容输出到标签体中 -->
+            <!-- #{***}代表读取messages.properties相应的属性-->
+            <h1 style="" th:text="#{app.report.name}">JUDI上海分公司员工信息表</h1>
+            <div class="panel panel-default">
+                <div class="clearfix panel-heading">
+                    <div class="input-group" style="">
+                        <!-- param用于获取请求的参数，相当于request.getParameter("keyword")  -->
+                        <input id="txtKeyword" type="text" class="form-control" placeholder="请输入要查询的员工" th:value="${param.keyword}">
+                        <div class="input-group-btn">
+                            <button class="btn btn-primary" id="btnQuery"><span class="glyphicon glyphicon-zoom-in"></span>查询</button>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <td>序号</td>
+                            <td>员工编号</td>
+                            <td>姓名</td>
+                            <td>部门</td>
+                            <td>岗位</td>
+                            <td>入职时间</td>
+                            <td>工资</td>
+                            <td>奖金</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </thead>
+                    <tbody th:remove="all-but-first">
+                        <!-- 1. #{}用于读取常量，配置文件中的信息 -->
+                        <!-- 2. ${}用于读取变量，程序中创建的，可以灵活改变的对象 -->
+                        <!-- 大多数的属性都可以支持三目表达式，格式 ${布尔表达式}? 成立 : 不成立 thymeleaf中布尔表达式的写法与Java相同-->
+                        <tr th:each="emp, stat : ${emps}" th:class="${emp.job == 'MANAGER' || emp.job == 'PRESIDENT'}?'highlight':''">
+                            <td th:text="${stat.index + 1}">1</td>
+                            <td th:text="${emp.empno}">5781</td>
+                            <!-- strings对象其实就是Java中的字符串对象，String提供的方法在#strings一样使用 -->
+                            <td th:text="${#strings.toLowerCase(emp.ename)}">SAM</td>
+                            <!-- switch case用于多分支条件 -->
+                            <td th:switch="${emp.dname}">
+                                <span th:case="ACCOUNTING">会计部</span>
+                                <span th:case="RESEARCH">研发部</span>
+                                <span th:case="SALES">销售部</span>
+                                <span th:case="*">其他部们</span>
+                                <!-- 在thymeleaf中只有th:if / th:unless 没有th:elseif -->
+                            </td>
+                            <td th:text="${emp.job}">CLERK</td>
+                            <td th:text="${#dates.format(emp.hiredate, 'yyyy年MM月dd日')}">1975年03月06日</td>
+                            <td th:style="${emp.sal > 1500} ? 'color:red;font-weight:bold;' " th:text="${#numbers.formatCurrency(emp.sal)}">$3300.00</td>
+                            <td th:text="${emp.comm!=null}?${#numbers.formatCurrency(emp.comm)}:'N/A'">$650.00</td>
+                            <td style="">
+                                <button class="btn btn-xs btn-info">详细</button>
+                                <button class="btn btn-xs btn-warning">删除</button>
+                            </td>
+                        </tr>
+                        <tr style="background-color: lightgreen">
+                            <td>1</td>
+                            <td>5780</td>
+                            <td>DEAN</td>
+                            <td>市场部</td>
+                            <td>MANAGER</td>
+                            <td>1985年5月30日</td>
+                            <td>$300.00</td>
+                            <td>N/A</td>
+                            <td style="">
+                                <button class="btn btn-xs btn-info">详细</button>
+                                <button class="btn btn-xs btn-warning">删除</button>
+                            </td>
+                        </tr>
+                        <tr style="">
+                            <td>2</td>
+                            <td>5781</td>
+                            <td>SAM</td>
+                            <td>研发部</td>
+                            <td>CLERK</td>
+                            <td>1975年03月06日</td>
+                            <td>$3300.00</td>
+                            <td>$650.00</td>
+                            <td style="">
+                                <button class="btn btn-xs btn-info">详细</button>
+                                <button class="btn btn-xs btn-warning">删除</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+<script type="text/javascript">
+    document.getElementById("btnQuery").onclick = function (ev) {
+        var url = "/?keyword=" + document.getElementById("txtKeyword").value;
+        window.location.href = url;
+    }
+</script>
+</body>
+</html>
