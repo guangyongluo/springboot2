@@ -1,25 +1,37 @@
 package com.vilin.myspringboot.controller;
 
 import com.vilin.myspringboot.entity.Department;
-import com.vilin.myspringboot.entity.Dept;
 import com.vilin.myspringboot.entity.Employee;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@ConfigurationProperties(prefix = "app")
 public class WebController {
     private Logger logger = LoggerFactory.getLogger(WebController.class);
     private List<Employee> emps = new ArrayList<Employee>();
     private List<Department> depts = new ArrayList<Department>();
+
+    private String path = null;
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
 
     public WebController(){
         emps.add(new Employee(7782, "ClARK", "RESEARCH", "DEVELOPER", "2014-12-01", 7780f) );
@@ -69,5 +81,37 @@ public class WebController {
             jobs.add("Cashier");
         }
         return jobs;
+    }
+
+    @PostMapping("/addemp")
+    //MultipartFile是上传文件接口，对应了保存的临时文件，参数名与前端的name保持一致。
+    //@RequestParam("photo")代表了photo参数对应于前端name=photo的file输入框
+    public ModelAndView addEmployee(Employee emp, @RequestParam("photo")  MultipartFile photo){
+
+        if(photo.isEmpty()) {
+            throw new RuntimeException("请重新上传文件");
+        }
+        //获取原始文件名
+        String filename = photo.getOriginalFilename();
+        //String name = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
+        String suffix = photo.getOriginalFilename().substring(photo.getOriginalFilename().lastIndexOf("."));
+
+        if(!suffix.equals(".PNG")){
+            throw new RuntimeException("无效的图片格式");
+        }
+
+        //Spring提供了一个文件操作类FileCopyUtil
+        try {
+            FileCopyUtils.copy(photo.getInputStream(), new FileOutputStream(path + filename));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        emp.setPhotoPath(path + filename);
+        emps.add(emp);
+
+        //页面重定项 redirect:跳转地址
+        ModelAndView mav = new ModelAndView("redirect:/empinfo");
+        return mav;
     }
 }

@@ -11,6 +11,7 @@ public class Employee {
     private String position;
     private Date hiredate;
     private Float salary;
+    private String photoPath;
 
     public Employee(Integer id, String name, String department, String position, String hiredate, Float salary) {
         this.id = id;
@@ -71,6 +72,14 @@ public class Employee {
 
     public void setSalary(Float salary) {
         this.salary = salary;
+    }
+
+    public String getPhotoPath() {
+        return photoPath;
+    }
+
+    public void setPhotoPath(String photoPath) {
+        this.photoPath = photoPath;
     }
 }
 

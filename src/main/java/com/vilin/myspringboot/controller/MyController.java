@@ -28,7 +28,7 @@ public class MyController {
         return "success";
     }
 
-//    @RequestMapping("/")
+   @RequestMapping("/idx")
     public String index(){
         //访问idx.html
         return "idx";
