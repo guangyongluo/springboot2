@@ -14,16 +14,18 @@ spring:
       charset: UTF-8
   mvc:
     date-format: yyyy-MM-dd
-    jackson:
-      time-zone: GMT+8
-      date-format: yyyy-MM-dd HH:mm:ss
-    datasource:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/springboot?serverTimezone=GMT%2B8
-      username: root
-      password: Lw@1985105
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  datasource:
+    url: jdbc:mysql://localhost:3306/scott?serverTimezone=GMT%2B8
+    username: root
+    password: Lw@1985105
+    driver-class-name: com.mysql.cj.jdbc.Driver
   servlet:
     multipart:
       max-file-size: 2MB
       max-request-size: 50MB
       location: D:/tmp/
+  jpa:
+    show-sql: true
