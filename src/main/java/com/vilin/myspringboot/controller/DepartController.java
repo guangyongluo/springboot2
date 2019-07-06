@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -58,5 +59,26 @@ public class DepartController {
         Depart depart = new Depart();
         depart.setDeptno(41);
         departRepository.delete(depart);
+    }
+
+    @GetMapping("/find")
+    @ResponseBody
+    public List<Depart> findDepartByName(String name){
+        List<Depart> list = departRepository.findByDname(name);
+        return list;
+    }
+
+    @GetMapping("/find/departs")
+    @ResponseBody
+    public List<Depart> findDeparts(String name){
+        List<Depart> list = departRepository.findDeparts(name);
+        return list;
+    }
+
+    @GetMapping("/JPA/find")
+    @ResponseBody
+    public List<Depart> findDepartsByJPARespository(){
+        List<Depart> list = departRepository.findByDeptnoLessThanEqualAndDnameContainingOrderByDname(50, "T");
+        return list;
     }
 }
