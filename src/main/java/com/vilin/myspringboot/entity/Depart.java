@@ -1,6 +1,8 @@
 package com.vilin.myspringboot.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity //告诉SpringBoot这是一个实体类，在SpringBoot启动的时候会加载这个类
 @Table(name="dept") //Dept类对应dept表
@@ -14,6 +16,11 @@ public class Depart {
     private String dname;
 
     private String location;
+
+    //在绝大多数情况下我们不配置OntToMany 1.数据获取效率差；2.会形成死循环
+//    @OneToMany
+//    @JoinColumn(name="deptno")
+//    private List<Employer> emps = new ArrayList<Employer>();
 
     public Depart() {
     }
@@ -48,4 +55,11 @@ public class Depart {
         this.location = location;
     }
 
+//    public List<Employer> getEmps() {
+//        return emps;
+//    }
+//
+//    public void setEmps(List<Employer> emps) {
+//        this.emps = emps;
+//    }
 }

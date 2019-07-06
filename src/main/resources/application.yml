@@ -17,6 +17,8 @@ spring:
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
+    serialization:
+      indent-output: true
   datasource:
     url: jdbc:mysql://localhost:3306/scott?serverTimezone=GMT%2B8
     username: root
@@ -28,4 +30,7 @@ spring:
       max-request-size: 50MB
       location: D:/tmp/
   jpa:
-    show-sql: true
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
