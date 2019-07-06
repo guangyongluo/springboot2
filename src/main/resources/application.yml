@@ -24,6 +24,41 @@ spring:
     username: root
     password: Lw@1985105
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+    #Druid配置
+
+    #连接池类型
+    type: com.alibaba.druid.pool.DruidDataSource
+
+    #启动时初始化5个连接
+    initial-size: 5
+    #最小空闲数
+    min-idle: 5
+    #最大连接数
+    max-active: 20
+    #获取连接的最大时间，超时报错
+    max-wait: 6000
+    #每60秒执行一次连接回收
+    time-between-eviction-runs-millis: 60000
+    #5分钟内没有任何操作的空闲会被回收
+    min-evictable-idle-time-millis: 300000
+    #验证数据库连接有效
+    validationQuery: SELECT 1 FROM DUAL
+    #空闲时进行连接测试
+    test-while-idle: true
+    #借用时不进行连接测试
+    test-on-borrow: false
+    #收回到连接池时不进行测试
+    test-on-return: false
+    poolPreparedStatements: false
+    #设置过滤器，stat接受当前SQL状态，wall防止SQL注入，logback使用logback记录日志
+    filters: stat,wall,logback
+    #收集所有的数据数据源的状态
+    userGlobalDataSourceStat: true
+
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+
+
   servlet:
     multipart:
       max-file-size: 2MB
