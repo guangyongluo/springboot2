@@ -4,6 +4,7 @@ import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
 import com.vilin.myspringboot.common.filter.AccessRecorderFilter;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -16,6 +17,8 @@ import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 
+//MapperScan注解会在springboot启动的时候扫描mapper包，并根据xml自动生成对应的实现类
+@MapperScan("com.vilin.myspringboot.mapper")
 //我是一个入口类，运行我就可以启动springboot应用，运行之后会自动扫描当前包和子包下
 //可以被注入的类包括：@Repository, @Service, @Controller, @Component, ,@Entity
 @SpringBootApplication

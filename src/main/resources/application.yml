@@ -58,7 +58,6 @@ spring:
 
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
 
-
   servlet:
     multipart:
       max-file-size: 2MB
@@ -69,3 +68,14 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+
+#mybatis
+mybatis:
+  config-location: classpath:/mybatis/mybatis-config.xml
+  mapper-locations: classpath:/mybatis/mapper/*.xml
+logging:
+  level:
+    com:
+      vilin:
+        myspringboot:
+          mapper: debug

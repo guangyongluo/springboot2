@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 映射文件配置，namespace指向接口 -->
+<mapper namespace="com.vilin.myspringboot.mapper.UserMapper">
+    <!-- select标签代表查询，findById要与方法名对应上 -->
+    <select id="findById" parameterType="Integer" resultType="com.vilin.myspringboot.entity.User">
+        select * from user where id = #{value}
+    </select>
+
+    <!-- Map将查询到的每一条记录包装成map, key就是字段名，value就是字段值 -->
+    <select id="findUsersByOptions" parameterType="java.util.Map" resultType="java.util.LinkedHashMap">
+        select * from user u, class c where u.classId = c.id
+        <if test="className != null">
+            and c.name = #{className}
+        </if>
+        <if test="score != null">
+            and u.score > #{score}
+        </if>
+    </select>
+</mapper>
