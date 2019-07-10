@@ -19,4 +19,22 @@
             and u.score > #{score}
         </if>
     </select>
+    <!-- selectKey代表将数据进行回填，select LAST_INSERT_ID()用户获得最新插入的id
+     LAST_INSERT_ID()是mysql的内置函数
+     -->
+    <insert id="insert" parameterType="com.vilin.myspringboot.entity.User">
+        INSERT INTO `scott`.`user`(`name`, `sex`, `score`, `birthday`, `classId`)
+        VALUES (#{name}, #{name} , #{score} , #{birthday} , #{classId} )
+        <selectKey keyProperty="id" keyColumn="id" resultType="Integer" order="AFTER">
+            select LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <update id="update" parameterType="com.vilin.myspringboot.entity.User">
+        UPDATE `scott`.`user` SET `name` = #{name}, `sex` = #{name}, `score` = #{score}, `birthday` = #{birthday}, `classId` = #{classId} WHERE `id` = #{id} ;
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        delete from user where id = #{value}
+    </delete>
 </mapper>
